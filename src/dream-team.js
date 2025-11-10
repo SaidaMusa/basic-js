@@ -1,12 +1,23 @@
-function createDreamTeam(members) {
-  if (!Array.isArray(members)) return false;
-  const letters = members
-    .filter(v => typeof v === 'string')
-    .map(s => s.trim()[0])
-    .filter(Boolean)
-    .map(ch => ch.toUpperCase())
-    .sort()
-    .join('');
-  return letters || false;
+const { NotImplementedError } = require('../lib');
+
+/**
+ * Create name of dream team based on the names of its members
+ *
+ * @param {Array} members names of the members
+ * @return {String | Boolean} name of the team or false
+ * in case of incorrect members
+ *
+ * @example
+ *
+ * createDreamTeam(['Matt', 'Ann', 'Dmitry', 'Max']) => 'ADMM'
+ * createDreamTeam(['Olivia', 1111, 'Lily', 'Oscar', true, null]) => 'LOO'
+ *
+ */
+function createDreamTeam(/* members */) {
+  // Remove line below and write your code here
+  throw new NotImplementedError('Not implemented');
 }
-module.exports = { createDreamTeam };
+
+module.exports = {
+  createDreamTeam
+};

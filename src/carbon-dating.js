@@ -1,13 +1,27 @@
+const { NotImplementedError } = require('../lib');
+
 const MODERN_ACTIVITY = 15;
 const HALF_LIFE_PERIOD = 5730;
-const LN2 = Math.log(2);
 
-function dateSample(sampleActivity) {
-  if (typeof sampleActivity !== 'string') return false;
-  const a = Number(sampleActivity.trim());
-  if (!isFinite(a) || a <= 0 || a >= MODERN_ACTIVITY) return false;
-  const k = LN2 / HALF_LIFE_PERIOD;
-  const t = Math.log(MODERN_ACTIVITY / a) / k;
-  return Math.ceil(t);
+/**
+ * Determine the age of archeological find by using
+ * given MODERN_ACTIVITY and HALF_LIFE_PERIOD values
+ *
+ * @param {String} sampleActivity string representation of current activity
+ * @return {Number | Boolean} calculated age in years or false
+ * in case of incorrect sampleActivity
+ *
+ * @example
+ *
+ * dateSample('1') => 22387
+ * dateSample('WOOT!') => false
+ *
+ */
+function dateSample(/* sampleActivity */) {
+  // Remove line below and write your code here
+  throw new NotImplementedError('Not implemented');
 }
-module.exports = { dateSample };
+
+module.exports = {
+  dateSample
+};
