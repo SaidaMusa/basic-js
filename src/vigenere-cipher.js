@@ -1,66 +1,51 @@
-'use strict';
-
-
 class VigenereCipheringMachine {
   constructor(direct = true) {
     this.direct = direct;
-    this.ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  }
-
-  /**
-   * Core routine used by encrypt/decrypt
-   * @param {string} message
-   * @param {string} key
-   * @param {'enc'|'dec'} mode
-   * @returns {string}
-   */
-  _process(message, key, mode) {
-    if (typeof message !== 'string' || typeof key !== 'string') {
-      throw new Error('Incorrect arguments!');
-    }
-
-    const msg = message.toUpperCase();
-    const k = key.toUpperCase();
-
-    let result = '';
-    let ki = 0; 
-
-    for (let i = 0; i < msg.length; i++) {
-      const ch = msg[i];
-      const mi = this.ALPHABET.indexOf(ch);
-
-      if (mi === -1) {
-        result += ch;
-        continue;
-      }
-
-      let keyChar = k[ki % k.length];
-      while (this.ALPHABET.indexOf(keyChar) === -1) {
-        ki++;
-        keyChar = k[ki % k.length];
-      }
-      const kiVal = this.ALPHABET.indexOf(keyChar);
-
-      let outIndex;
-      if (mode === 'enc') {
-        outIndex = (mi + kiVal) % 26;
-      } else {
-        outIndex = (mi - kiVal + 26) % 26;
-      }
-
-      result += this.ALPHABET[outIndex];
-      ki++; 
-    }
-
-    return this.direct ? result : result.split('').reverse().join('');
+    this.A = 'A'.charCodeAt(0);
+    this.Z = 'Z'.charCodeAt(0);
   }
 
   encrypt(message, key) {
-    return this._process(message, key, 'enc');
+    if (message === undefined || key === undefined) {
+      throw new Error('Incorrect arguments!');
+    }
+    return this.#process(message, key, +1);
   }
 
   decrypt(message, key) {
-    return this._process(message, key, 'dec');
+    if (message === undefined || key === undefined) {
+      throw new Error('Incorrect arguments!');
+    }
+    return this.#process(message, key, -1);
+  }
+
+  #process(message, key, dir) {
+    const upMsg = String(message).toUpperCase();
+    const upKey = String(key).toUpperCase();
+    const res = [];
+
+    let k = 0; 
+
+    for (let i = 0; i < upMsg.length; i++) {
+      const ch = upMsg[i];
+      const code = ch.charCodeAt(0);
+
+      if (code >= this.A && code <= this.Z) {
+        const mPos = code - this.A;
+        const kPos = upKey.charCodeAt(k % upKey.length) - this.A;
+
+        let cPos = (mPos + dir * kPos) % 26;
+        if (cPos < 0) cPos += 26;
+
+        res.push(String.fromCharCode(this.A + cPos));
+        k++; 
+      } else {
+        res.push(ch);
+      }
+    }
+
+    const out = this.direct ? res.join('') : res.reverse().join('');
+    return out;
   }
 }
 
