@@ -8,4 +8,4 @@ function getSumOfDigits(n) {
   return num;
 }
 
-module.exports = getSumOfDigits;
+module.exports = {getSumOfDigits};

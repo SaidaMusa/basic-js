@@ -17,4 +17,4 @@ function renameFiles(names) {
   });
 }
 
-module.exports = renameFiles;
+module.exports = {renameFiles};

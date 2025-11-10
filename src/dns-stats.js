@@ -13,4 +13,5 @@ function getDNSStats(domains) {
   return obj;
 }
 
-module.exports = getDNSStats;
+module.exports = { getDNSStats };
+

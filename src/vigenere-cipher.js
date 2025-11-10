@@ -44,4 +44,4 @@ class VigenereCipheringMachine {
   }
 }
 
-module.exports = VigenereCipheringMachine;
+module.exports = {VigenereCipheringMachine};

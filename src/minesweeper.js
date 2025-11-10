@@ -22,4 +22,4 @@ function minesweeper(matrix) {
   return res;
 }
 
-module.exports = minesweeper;
+module.exports = {minesweeper};

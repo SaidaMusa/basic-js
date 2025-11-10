@@ -19,4 +19,4 @@ function repeater(str, options = {}) {
   return new Array(repeatTimes).fill(fullChunk).join(separator);
 }
 
-module.exports = repeater;
+module.exports = {repeater};

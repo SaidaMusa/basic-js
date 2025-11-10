@@ -11,4 +11,4 @@ function getCommonCharacterCount(s1, s2) {
   return res;
 }
 
-module.exports = getCommonCharacterCount;
+module.exports = { getCommonCharacterCount };

@@ -18,4 +18,4 @@ function getMatrixElementsSum(matrix) {
   return sum;
 }
 
-module.exports = getMatrixElementsSum;
+module.exports = {getMatrixElementsSum};

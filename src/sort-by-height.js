@@ -4,4 +4,4 @@ function sortByHeight(arr) {
   return arr.map((x) => (x === -1 ? -1 : vals[i++]));
 }
 
-module.exports = sortByHeight;
+module.exports = {sortByHeight};

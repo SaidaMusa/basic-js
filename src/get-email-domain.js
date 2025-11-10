@@ -3,4 +3,4 @@ function getEmailDomain(email) {
   return email.slice(idx + 1);
 }
 
-module.exports = getEmailDomain;
+module.exports = {getEmailDomain};

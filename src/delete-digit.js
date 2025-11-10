@@ -8,4 +8,5 @@ function deleteDigit(n) {
   return best;
 }
 
-module.exports = deleteDigit;
+module.exports = { deleteDigit };
+
