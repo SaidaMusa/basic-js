@@ -1,32 +1,13 @@
-const { NotImplementedError } = require('../lib');
-
-/**
- * Given an array of domains, return the object with the appearances of the DNS.
- *
- * @param {Array} domains
- * @return {Object}
- *
- * @example
- * domains = [
- *  'code.yandex.ru',
- *  'music.yandex.ru',
- *  'yandex.ru'
- * ]
- *
- * The result should be the following:
- * {
- *   '.ru': 3,
- *   '.ru.yandex': 3,
- *   '.ru.yandex.code': 1,
- *   '.ru.yandex.music': 1,
- * }
- *
- */
-function getDNSStats(/* domains */) {
-  // Remove line below and write your code here
-  throw new NotImplementedError('Not implemented');
+function getDNSStats(domains) {
+  const res = {};
+  for (const d of domains) {
+    const parts = d.split('.').reverse();
+    let acc = '';
+    for (const p of parts) {
+      acc = acc + '.' + p;
+      res[acc] = (res[acc] || 0) + 1;
+    }
+  }
+  return res;
 }
-
-module.exports = {
-  getDNSStats
-};
+module.exports = getDNSStats;

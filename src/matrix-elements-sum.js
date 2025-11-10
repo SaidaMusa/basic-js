@@ -1,26 +1,13 @@
-const { NotImplementedError } = require('../lib');
-
-/**
- * Given matrix, a rectangular matrix of integers,
- * just add up all the values that don't appear below a "0".
- *
- * @param {Array<Array>} matrix
- * @return {Number}
- *
- * @example
- * matrix = [
- *  [0, 1, 1, 2],
- *  [0, 5, 0, 0],
- *  [2, 0, 3, 3]
- * ]
- *
- * The result should be 9
- */
-function getMatrixElementsSum(/* matrix */) {
-  // Remove line below and write your code here
-  throw new NotImplementedError('Not implemented');
+function getMatrixElementsSum(matrix) {
+  const blocked = new Set();
+  let sum = 0;
+  for (let r = 0; r < matrix.length; r++) {
+    for (let c = 0; c < matrix[r].length; c++) {
+      if (blocked.has(c)) continue;
+      if (matrix[r][c] === 0) blocked.add(c);
+      else sum += matrix[r][c];
+    }
+  }
+  return sum;
 }
-
-module.exports = {
-  getMatrixElementsSum
-};
+module.exports = getMatrixElementsSum;
