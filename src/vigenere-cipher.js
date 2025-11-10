@@ -1,60 +1,67 @@
-const { NotImplementedError } = require('../lib');
+'use strict';
+
 
 class VigenereCipheringMachine {
   constructor(direct = true) {
     this.direct = direct;
+    this.ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   }
 
-  encrypt(message, key) {
-    return this.#process(message, key, 'encrypt');
-  }
-
-  decrypt(encryptedMessage, key) {
-    return this.#process(encryptedMessage, key, 'decrypt');
-  }
-
-  #process(text, key, mode) {
-    if (typeof text !== 'string' || typeof key !== 'string') {
+  /**
+   * Core routine used by encrypt/decrypt
+   * @param {string} message
+   * @param {string} key
+   * @param {'enc'|'dec'} mode
+   * @returns {string}
+   */
+  _process(message, key, mode) {
+    if (typeof message !== 'string' || typeof key !== 'string') {
       throw new Error('Incorrect arguments!');
     }
 
-    const A = 'A'.charCodeAt(0);
-    const Z = 'Z'.charCodeAt(0);
-
-    const msg = text.toUpperCase();
+    const msg = message.toUpperCase();
     const k = key.toUpperCase();
 
-    let res = '';
+    let result = '';
     let ki = 0; 
 
     for (let i = 0; i < msg.length; i++) {
       const ch = msg[i];
-      const code = ch.charCodeAt(0);
+      const mi = this.ALPHABET.indexOf(ch);
 
-      const isLetter = code >= A && code <= Z;
-      if (!isLetter) {
-        res += ch;               
+      if (mi === -1) {
+        result += ch;
         continue;
       }
 
-      const m = code - A;
-      const kc = k[ki % k.length].charCodeAt(0) - A;
+      let keyChar = k[ki % k.length];
+      while (this.ALPHABET.indexOf(keyChar) === -1) {
+        ki++;
+        keyChar = k[ki % k.length];
+      }
+      const kiVal = this.ALPHABET.indexOf(keyChar);
 
-      let enc;
-      if (mode === 'encrypt') {
-        enc = (m + kc) % 26;
-      } else { 
-        enc = (m - kc + 26) % 26;
+      let outIndex;
+      if (mode === 'enc') {
+        outIndex = (mi + kiVal) % 26;
+      } else {
+        outIndex = (mi - kiVal + 26) % 26;
       }
 
-      res += String.fromCharCode(A + enc);
-      ki++;
+      result += this.ALPHABET[outIndex];
+      ki++; 
     }
 
-    return this.direct ? res : res.split('').reverse().join('');
+    return this.direct ? result : result.split('').reverse().join('');
+  }
+
+  encrypt(message, key) {
+    return this._process(message, key, 'enc');
+  }
+
+  decrypt(message, key) {
+    return this._process(message, key, 'dec');
   }
 }
 
-module.exports = {
-  VigenereCipheringMachine,
-};
+module.exports = { VigenereCipheringMachine };
