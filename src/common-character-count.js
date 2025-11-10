@@ -1,22 +1,14 @@
-const { NotImplementedError } = require('../lib');
+function getCommonCharacterCount(s1, s2) {
+  const cnt1 = {};
+  const cnt2 = {};
+  for (const ch of s1) cnt1[ch] = (cnt1[ch] || 0) + 1;
+  for (const ch of s2) cnt2[ch] = (cnt2[ch] || 0) + 1;
 
-/**
- * Given two strings, find the number of common characters between them.
- *
- * @param {String} s1
- * @param {String} s2
- * @return {Number}
- *
- * @example
- * For s1 = "aabcc" and s2 = "adcaa", the output should be 3
- * Strings have 3 common characters - 2 "a"s and 1 "c".
- */
-
-function getCommonCharacterCount(/* s1, s2 */) {
-  // Remove line below and write your code here
-  throw new NotImplementedError('Not implemented');
+  let res = 0;
+  for (const ch of Object.keys(cnt1)) {
+    if (cnt2[ch]) res += Math.min(cnt1[ch], cnt2[ch]);
+  }
+  return res;
 }
 
-module.exports = {
-  getCommonCharacterCount
-};
+module.exports = getCommonCharacterCount;

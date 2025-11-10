@@ -1,26 +1,21 @@
-const { NotImplementedError } = require('../lib');
+function getMatrixElementsSum(matrix) {
+  let sum = 0;
+  const rows = matrix.length;
+  const cols = matrix[0]?.length || 0;
+  const haunted = new Array(cols).fill(false);
 
-/**
- * Given matrix, a rectangular matrix of integers,
- * just add up all the values that don't appear below a "0".
- *
- * @param {Array<Array>} matrix
- * @return {Number}
- *
- * @example
- * matrix = [
- *  [0, 1, 1, 2],
- *  [0, 5, 0, 0],
- *  [2, 0, 3, 3]
- * ]
- *
- * The result should be 9
- */
-function getMatrixElementsSum(/* matrix */) {
-  // Remove line below and write your code here
-  throw new NotImplementedError('Not implemented');
+  for (let r = 0; r < rows; r += 1) {
+    for (let c = 0; c < cols; c += 1) {
+      if (haunted[c]) continue;
+      const val = matrix[r][c];
+      if (val === 0) {
+        haunted[c] = true;
+      } else {
+        sum += val;
+      }
+    }
+  }
+  return sum;
 }
 
-module.exports = {
-  getMatrixElementsSum
-};
+module.exports = getMatrixElementsSum;
