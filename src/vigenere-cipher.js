@@ -1,47 +1,60 @@
+const { NotImplementedError } = require('../lib');
+
 class VigenereCipheringMachine {
   constructor(direct = true) {
     this.direct = direct;
-    this.A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  }
-
-  _shiftChar(ch, keyCh, mode) {
-    const i = this.A.indexOf(ch);
-    const k = this.A.indexOf(keyCh);
-    if (i === -1) return ch;
-    let resIdx;
-    if (mode === 'enc') resIdx = (i + k) % 26;
-    else resIdx = (i - k + 26) % 26;
-    return this.A[resIdx];
-  }
-
-  _process(message, key, mode) {
-    if (message === undefined || key === undefined) {
-      throw new Error('Incorrect arguments!');
-    }
-    const msg = String(message).toUpperCase();
-    const k = String(key).toUpperCase();
-
-    let ki = 0;
-    let out = '';
-    for (const ch of msg) {
-      if (this.A.includes(ch)) {
-        const keyCh = k[ki % k.length];
-        out += this._shiftChar(ch, keyCh, mode);
-        ki += 1;
-      } else {
-        out += ch;
-      }
-    }
-    return this.direct ? out : out.split('').reverse().join('');
   }
 
   encrypt(message, key) {
-    return this._process(message, key, 'enc');
+    return this.#process(message, key, 'encrypt');
   }
 
-  decrypt(message, key) {
-    return this._process(message, key, 'dec');
+  decrypt(encryptedMessage, key) {
+    return this.#process(encryptedMessage, key, 'decrypt');
+  }
+
+  #process(text, key, mode) {
+    if (typeof text !== 'string' || typeof key !== 'string') {
+      throw new Error('Incorrect arguments!');
+    }
+
+    const A = 'A'.charCodeAt(0);
+    const Z = 'Z'.charCodeAt(0);
+
+    const msg = text.toUpperCase();
+    const k = key.toUpperCase();
+
+    let res = '';
+    let ki = 0; 
+
+    for (let i = 0; i < msg.length; i++) {
+      const ch = msg[i];
+      const code = ch.charCodeAt(0);
+
+      const isLetter = code >= A && code <= Z;
+      if (!isLetter) {
+        res += ch;               
+        continue;
+      }
+
+      const m = code - A;
+      const kc = k[ki % k.length].charCodeAt(0) - A;
+
+      let enc;
+      if (mode === 'encrypt') {
+        enc = (m + kc) % 26;
+      } else { 
+        enc = (m - kc + 26) % 26;
+      }
+
+      res += String.fromCharCode(A + enc);
+      ki++;
+    }
+
+    return this.direct ? res : res.split('').reverse().join('');
   }
 }
 
-module.exports = {VigenereCipheringMachine};
+module.exports = {
+  VigenereCipheringMachine,
+};
